@@ -1,0 +1,36 @@
+---
+
+---
+Program     := module={binding=Binding _ ';' | stmt=Expr _ ';'}*  _
+
+
+
+
+Keyword     := 'if' | 'then' | 'else'
+_           := wspace*
+wspace      := '(?:\s)'
+
+Bool        := _ bool='True|False'
+Int         := _ int='[0-9]+'
+Lit := Bool | Int
+
+Ident := _ !{Keyword} name='[a-z][a-zA-Z0-9]*'
+UppIdent := _ !{Keyword} name='[A-Z][a-zA-Z0-9]*'
+
+Type := head=Type_ arrow={_ '->' tail=Type}?
+Type_ := _ '\(' type=Type _ '\)' | tvar=Ident | tcons=UppIdent tparams=Type*
+
+Expr := condExpr=CondExpr | lambdaExpr=LambdaExpr | binExpr=BinExpr  
+
+CondExpr := _ 'if' _ cond=Expr _ 'then' true_=Expr _ 'else' false_=Expr
+LambdaExpr := _ '\\' _ param=Ident _ '->' body=Expr
+
+BinExpr := lhs=Exprs tail={_ op=Op rhs=Exprs}*
+
+Exprs := head=ExprTerm tail=Expr*
+ExprTerm := _ '\(' expr=Expr _ '\)' | lit=Lit | variable=Ident | vcons=UppIdent
+
+Op := '\+|-|\*|=='
+
+
+Binding := name=Ident _ '=' value=Expr

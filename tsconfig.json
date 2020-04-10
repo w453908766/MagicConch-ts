@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",                      
+    "module": "commonjs",          
+   "outDir": "./node_build",       
+    "rootDir": ".",        
+    "strict": false,                
+    "moduleResolution": "node"
+  }
+}
